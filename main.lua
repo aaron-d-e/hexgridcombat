@@ -1,5 +1,21 @@
+--global variables
+
+hexaPositionsY= {}
+hexaPositionsX = {}
+hexaCount = 1
+
+function love.load()
+	love.graphics.setDefaultFilter('nearest', 'nearest')
+	love.window.setTitle('gridcombat 0.1')
+end
+
+printed = false
+function love.update()
+
+end
+
 function love.draw()
-    local cols, rows = 5, 5  -- Number of hexagons in the grid
+    local cols, rows = 10, 10  -- Number of hexagons in the grid
     local startX, startY = 100, 100  -- Starting position
     local radius = 30  -- Hexagon radius
 
@@ -16,8 +32,9 @@ function love.draw()
             if col % 2 == 1 then
                 y = y + (radius * 0.85)
             end
-
+			
             drawHexagon(x, y, radius)
+			drawHexaPoint(x, y)
         end
     end
 end
@@ -33,6 +50,30 @@ function drawHexagon(centerX, centerY, radius)
         table.insert(vertices, y)
     end
 
+
     love.graphics.polygon("line", vertices)
+end
+
+function drawHexaPoint(centerX, centerY)
+	love.graphics.points(centerX, centerY)
+	
+	if hexaCount <= 100 then
+		table.insert(hexaPositionsX, centerX)
+		table.insert(hexaPositionsY, centerY)
+		print(hexaCount)
+		print("X:", centerX, "Y:", centerY)
+		hexaCount = hexaCount + 1
+	end
+	if(hexaCount == 100) then
+		printDebugPositions()
+	end
+end
+
+
+function printDebugPositions() 	
+	for i, pos in ipairs(hexaPositionsX) do
+		print("index", i, "X: ", pos)
+		print(hexaPositionsY[i])
+	end
 end
 
