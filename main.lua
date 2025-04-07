@@ -9,7 +9,6 @@ function love.load()
 	love.window.setTitle('gridcombat 0.1')
 end
 
-printed = false
 function love.update()
 
 end
@@ -33,13 +32,15 @@ function love.draw()
                 y = y + (radius * 0.85)
             end
 			
-            drawHexagon(x, y, radius)
+            drawLinedHexa(x, y, radius)
 			drawHexaPoint(x, y)
         end
     end
+
+	hexaHoverFill()
 end
 
-function drawHexagon(centerX, centerY, radius)
+function drawLinedHexa(centerX, centerY, radius)
     local vertices = {}
 
     for i = 0, 5 do
@@ -60,8 +61,6 @@ function drawHexaPoint(centerX, centerY)
 	if hexaCount <= 100 then
 		table.insert(hexaPositionsX, centerX)
 		table.insert(hexaPositionsY, centerY)
-		print(hexaCount)
-		print("X:", centerX, "Y:", centerY)
 		hexaCount = hexaCount + 1
 	end
 	if(hexaCount == 100) then
@@ -72,8 +71,41 @@ end
 
 function printDebugPositions() 	
 	for i, pos in ipairs(hexaPositionsX) do
-		print("index", i, "X: ", pos)
-		print(hexaPositionsY[i])
+		print("index", i)
+		print("X: ", pos)
+		print("Y: ", hexaPositionsY[i])
 	end
+end
+
+function drawFilledHex(centerX, centerY, radius) --FIX ME
+	local vertices = {}
+
+	for i = 0, 5 do
+		local angle = (i * math.pi / 3) + (math.pi / 3)
+		local x = centerX + radius * math.cos(angle)
+		local y = centerY + radius * math.cos(angle)
+		table.insert(vertices, x)
+		table.insert(vertices, y)
+	end
+
+	love.graphics.polygon("fill", vertices)
+end
+
+
+function hexaHoverFill()
+	local mouseX,mouseY = love.mouse.getPosition()
+	local minDist = 9999999
+	local minY = 0
+	local minX = 0
+	for i, pos in ipairs(hexaPositionsX) do
+		local distance = math.sqrt(math.pow((mouseX-hexaPositionsX[i]), 2) + math.pow((mouseY-hexaPositionsY[i]),2))
+		if distance < minDist then
+			minDist = distance
+			minX = hexaPositionsX[i]
+			minY = hexaPositionsY[i]
+		end
+	end
+	local radius = 30
+	love.graphics.circle("fill", minX, minY, radius)
 end
 
