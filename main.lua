@@ -3,13 +3,30 @@
 hexaPositionsY= {}
 hexaPositionsX = {}
 hexaCount = 1
+WINDOW_WIDTH = 1280
+WINDOW_HEIGHT = 720
 
 function love.load()
 	love.graphics.setDefaultFilter('nearest', 'nearest')
 	love.window.setTitle('gridcombat 0.1')
+	
+	love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT)
+	
 end
 
 function love.update()
+
+	function love.keypressed(key) --function to quit on escape
+		if key == "escape" then
+			love.event.quit()
+		end
+	end
+	
+	function love.mousepressed(x, y, button)
+		if button == 1 and x > 70 and x < 595 and y < 610 and y > 72 then
+			print(x,y)
+		end
+	end
 
 end
 
@@ -21,7 +38,7 @@ function love.draw()
     local hexWidth = math.sqrt(3) * radius  -- Width of hexagon
     local hexHeight = 2 * radius  -- Height of hexagon
 
-    for col = 0, cols - 1 do
+    for col = 0, cols - 1 do 
         for row = 0, rows - 1 do
             -- Compute hexagon center position
             local x = startX + col * hexWidth
@@ -38,7 +55,9 @@ function love.draw()
     end
 
 	hexaHoverFill()
+	displayFPS()
 end
+
 
 function drawLinedHexa(centerX, centerY, radius)
     local vertices = {}
@@ -105,7 +124,11 @@ function hexaHoverFill()
 			minY = hexaPositionsY[i]
 		end
 	end
-	local radius = 30
+	local radius = 20
 	love.graphics.circle("fill", minX, minY, radius)
+end
+
+function displayFPS()
+	love.graphics.print('FPS: ' .. tostring(love.timer.getFPS()), 1200, 10)
 end
 
