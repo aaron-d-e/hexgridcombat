@@ -1,12 +1,12 @@
---global variables
-
-hexaPositionsY= {}
-hexaPositionsX = {}
-hexaCount = 1
-WINDOW_WIDTH = 1280
-WINDOW_HEIGHT = 720
 
 function love.load()
+	--global variables
+	hexaPositionsY= {}
+	hexaPositionsX = {}
+	hexaCount = 1
+	WINDOW_WIDTH = 1280
+	WINDOW_HEIGHT = 720
+
 	love.graphics.setDefaultFilter('nearest', 'nearest')
 	love.window.setTitle('gridcombat 0.1')
 	
@@ -23,7 +23,7 @@ function love.update()
 	end
 	
 	function love.mousepressed(x, y, button)
-		if button == 1 and x > 70 and x < 595 and y < 610 and y > 72 then
+		if button == 1 and x > 65 and x < 680 and y < 695 and y > 70 then
 			print(x,y)
 		end
 	end
@@ -33,7 +33,7 @@ end
 function love.draw()
     local cols, rows = 10, 10  -- Number of hexagons in the grid
     local startX, startY = 100, 100  -- Starting position
-    local radius = 30  -- Hexagon radius
+    local radius = 35  -- Hexagon radius
 
     local hexWidth = math.sqrt(3) * radius  -- Width of hexagon
     local hexHeight = 2 * radius  -- Height of hexagon
@@ -76,8 +76,9 @@ end
 
 function drawHexaPoint(centerX, centerY)
 	love.graphics.points(centerX, centerY)
+	local total = 100
 	
-	if hexaCount <= 100 then
+	if hexaCount <= total then
 		table.insert(hexaPositionsX, centerX)
 		table.insert(hexaPositionsY, centerY)
 		hexaCount = hexaCount + 1
@@ -96,21 +97,6 @@ function printDebugPositions()
 	end
 end
 
-function drawFilledHex(centerX, centerY, radius) --FIX ME
-	local vertices = {}
-
-	for i = 0, 5 do
-		local angle = (i * math.pi / 3) + (math.pi / 3)
-		local x = centerX + radius * math.cos(angle)
-		local y = centerY + radius * math.cos(angle)
-		table.insert(vertices, x)
-		table.insert(vertices, y)
-	end
-
-	love.graphics.polygon("fill", vertices)
-end
-
-
 function hexaHoverFill()
 	local mouseX,mouseY = love.mouse.getPosition()
 	local minDist = 9999999
@@ -124,7 +110,7 @@ function hexaHoverFill()
 			minY = hexaPositionsY[i]
 		end
 	end
-	local radius = 20
+	local radius = 15
 	love.graphics.circle("fill", minX, minY, radius)
 end
 
