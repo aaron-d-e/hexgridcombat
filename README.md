@@ -1,2 +1,1 @@
-# hexgridcombat
-Implementation of grid based movement and combat system using LOVE2D.
+Highlights the correct region whenever the mouse cursor is hovering on a hexagonal grid cell. Written using Lua and LOVE2D.
